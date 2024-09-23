@@ -11,6 +11,16 @@ services:
       - my_network  # 네트워크 설정 추가
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    depends_on:
+      db:
+        condition: service_healthy
 
 networks:
   my_network: # 사용자 정의 네트워크
