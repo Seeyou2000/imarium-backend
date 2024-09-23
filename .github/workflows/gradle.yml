@@ -12,12 +12,17 @@ jobs:
     permissions:
       contents: read
 
-    env:
-      DB_HOST: my_mariadb
-      DB_PORT: 3306
-      DB_DATABASE: springbootdb
-      DB_USERNAME: root
-      DB_PASSWORD: maria
+    services:
+      mariadb:
+        image: my_mariadb
+        ports:
+          - 3306:3306
+        env:
+          DB_HOST: my_mariadb
+          DB_PORT: 3306
+          DB_DATABASE: springbootdb
+          DB_USERNAME: root
+          DB_PASSWORD: maria
 
     steps:
       - uses: actions/checkout@v4
