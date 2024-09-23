@@ -18,11 +18,17 @@ jobs:
         ports:
           - 3306:3306
         env:
-          DB_HOST: my_mariadb
-          DB_PORT: 3306
-          DB_DATABASE: springbootdb
-          DB_USERNAME: root
-          DB_PASSWORD: maria
+          MARIADB_ROOT_PASSWORD: maria
+          MARIADB_DATABASE: springbootdb
+          MARIADB_USER: root
+          MARIADB_PASSWORD: maria
+
+    env:
+      DB_HOST: mariadb           # 서비스 이름으로 변경
+      DB_PORT: 3306
+      DB_DATABASE: springbootdb
+      DB_USERNAME: root
+      DB_PASSWORD: maria
 
     steps:
       - uses: actions/checkout@v4
@@ -32,8 +38,6 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
-      # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
@@ -43,26 +47,8 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
 
-  dependency-submission:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-      # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
   deploy:
-    needs: build  # Ensure deployment runs only after the build job completes
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -72,12 +58,12 @@ jobs:
       - name: Deploy to AWS EC2 via SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.AWS_EC2_HOST }}           # The EC2 public IP or hostname
-          username: ${{ secrets.AWS_EC2_USER }}       # The EC2 user (e.g., ec2-user, ubuntu)
-          key: ${{ secrets.AWS_EC2_KEY }}             # SSH private key stored in GitHub Secrets
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ${{ secrets.AWS_EC2_USER }}
+          key: ${{ secrets.AWS_EC2_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu                           # Navigate to the project directory on EC2
-            git pull origin main                      # Pull the latest changes
-            docker-compose down                       # Stop any existing containers
-            docker-compose up -d --build              # Rebuild and restart the containers
+            cd /home/ubuntu
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
