@@ -1,1 +1,20 @@
+version: '3.8'
 services:
+  db:
+    image: my_mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: maria
+      MARIADB_DATABASE: springbootdb
+    ports:
+      - "3306:3306"
+    networks:
+      - my_network  # 네트워크 설정 추가
+    volumes:
+      - db_data:/var/lib/mysql
+
+networks:
+  my_network: # 사용자 정의 네트워크
+    driver: bridge
+
+volumes:
+  db_data:
