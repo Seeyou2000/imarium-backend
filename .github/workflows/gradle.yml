@@ -64,6 +64,13 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu
-            git pull origin main
+            if [ ! -d ".git" ]; then
+                git clone https://github.com/Seeyou2000/imarium-backend.git .
+            else
+                git pull origin main
+            fi
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
             docker-compose down
             docker-compose up -d --build
+          
