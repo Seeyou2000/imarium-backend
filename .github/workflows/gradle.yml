@@ -69,6 +69,7 @@ jobs:
             else
                 git pull origin main
             fi
+            cd imarium-backend
             docker-compose down
             docker-compose up -d --build
           
