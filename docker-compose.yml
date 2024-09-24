@@ -12,14 +12,16 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - my_network  # 네트워크 설정 추가
+      - my_network
     volumes:
-      - db_data:./mysql/conf.d:/etc/mysql/conf.d
+      - db_data:/var/lib/mysql
+      - ./mysql/conf.d:/etc/mysql/conf.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
+
   application:
     container_name: imarium-backend
     image: seeyou2000/imarium_backend
@@ -32,14 +34,13 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/springbootdb?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSOWRD: "maria"
-  app:
+      SPRING_DATASOURCE_PASSWORD: "maria"
     depends_on:
       db:
         condition: service_healthy
 
 networks:
-  my_network: # 사용자 정의 네트워크
+  my_network:
     driver: bridge
 
 volumes:
