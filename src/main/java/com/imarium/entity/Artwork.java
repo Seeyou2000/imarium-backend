@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,8 +42,8 @@ public class Artwork {
     private Artist artist;
 
     // Artwork와 Image 간의 1:N 관계 설정
-    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
-    private List<Image> images;
+    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();  // images 필드를 빈 리스트로 초기화
 
     @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
     private List<ArtworkPrice> artworkPrices;

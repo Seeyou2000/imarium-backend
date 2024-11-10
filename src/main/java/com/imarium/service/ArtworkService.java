@@ -31,5 +31,9 @@ public class ArtworkService {
     public Artwork getArtworkById(Long id) {
         return artworkRepository.findById(id).orElseThrow(() -> new RuntimeException("Artwork not found"));
     }
+
+    public Artwork save(Artwork artwork) {
+        return artworkRepository.save(artwork);
+    }
 }
 
