@@ -33,6 +33,9 @@ public class Artwork {
     @Column(nullable = false)
     private Boolean isSaved;
 
+    @Column(nullable = false)
+    private String category;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;

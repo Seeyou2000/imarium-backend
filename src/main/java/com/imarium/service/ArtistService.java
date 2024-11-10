@@ -61,6 +61,7 @@ public class ArtistService {
                         artwork.getDescription(),
                         artwork.getMaterial(),
                         artwork.getSize(),
+                        artwork.getCategory(),
                         artwork.getYear(),
                         artwork.getIsSaved(),
                         artwork.getImages().stream().map(Image::getImageUrl).collect(Collectors.toList())

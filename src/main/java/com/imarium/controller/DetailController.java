@@ -87,6 +87,7 @@ public class DetailController {
                 artwork.getYear(),
                 artwork.getArtist().getName(),
                 artwork.getDescription(),
+                artwork.getCategory(),
                 artwork.getIsSaved()
         );
         return ResponseEntity.ok(dto);

@@ -1,6 +1,7 @@
 package com.imarium.repository;
 
 import com.imarium.entity.Artist;
+import com.imarium.entity.Artwork;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
