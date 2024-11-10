@@ -69,8 +69,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
-                    auth.anyRequest().hasAnyRole("USER", "ARTIST");
+                    //테스트를 위한 임시 처리
+                    auth.anyRequest().permitAll();
+                    //auth.requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
+                    //auth.anyRequest().hasAnyRole("USER", "ARTIST");
                 });
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
