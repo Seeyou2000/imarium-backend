@@ -1,13 +1,7 @@
 package com.imarium.config;
 
-import com.imarium.entity.Artist;
-import com.imarium.entity.Artwork;
-import com.imarium.entity.ArtworkPrice;
-import com.imarium.entity.Image;
-import com.imarium.repository.ArtistRepository;
-import com.imarium.repository.ArtworkPriceRepository;
-import com.imarium.repository.ArtworkRepository;
-import com.imarium.repository.FileRepository;
+import com.imarium.entity.*;
+import com.imarium.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +12,7 @@ import java.util.List;
 public class DummyDataConfig {
 
     @Bean
-    public CommandLineRunner insertDummyData(
+    public CommandLineRunner insertArtwork(
             ArtistRepository artistRepository,
             ArtworkRepository artworkRepository,
             ArtworkPriceRepository artworkPriceRepository,
@@ -55,10 +49,10 @@ public class DummyDataConfig {
 
                 // 이미지 URL 목록
                 List<String> imageUrls = List.of(
-                        "/uploads/image1.jpg",  // 실제 업로드된 이미지 URL을 사용
-                        "/uploads/image2.jpg",
-                        "/uploads/image3.jpg",
-                        "/uploads/image4.jpg"
+                        "/uploads/artwork/image1.jpg",  // 실제 업로드된 이미지 URL을 사용
+                        "/uploads/artwork/image2.jpg",
+                        "/uploads/artwork/image3.jpg",
+                        "/uploads/artwork/image4.jpg"
                 );
 
                 // 이미지 추가
@@ -77,6 +71,16 @@ public class DummyDataConfig {
                 artworkPrice.setMaxPrice(600000);
                 artworkPriceRepository.save(artworkPrice);
             }
+        };
+    }
+
+    @Bean
+    public CommandLineRunner insertCarousel(CarouselRepository carouselRepository){
+        return args -> {
+            Carousel carousel = new Carousel();
+            carousel.setImageUrl("/uploads/carousel/image1.jpg");
+            carousel.setLinkUrl("/artist/1");
+            carouselRepository.save(carousel);
         };
     }
 }
