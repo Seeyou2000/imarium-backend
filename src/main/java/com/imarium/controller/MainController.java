@@ -93,7 +93,7 @@ public class MainController {
             reviews = reviewService.findPopularOrLatestReviews(25);
         }
         List<ReviewDto> reviewDtos = reviews.stream()
-                .map(review -> new ReviewDto(review.getId(), review.getContent(), review.getLikes(), review.getIsRecommended()))
+                .map(review -> new ReviewDto(review.getId(), review.getArtworkId(), review.getContent(), review.getLikes(), review.getIsRecommended()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(reviewDtos);
     }

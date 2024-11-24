@@ -16,6 +16,7 @@ public class DummyDataConfig {
             ArtistRepository artistRepository,
             ArtworkRepository artworkRepository,
             ArtworkPriceRepository artworkPriceRepository,
+            ReviewRepository reviewRepository,
             FileRepository fileRepository) {
         return args -> {
             // Check if the artwork already exists
@@ -70,6 +71,14 @@ public class DummyDataConfig {
                 artworkPrice.setMinPrice(600000);
                 artworkPrice.setMaxPrice(600000);
                 artworkPriceRepository.save(artworkPrice);
+
+                Review review = new Review();
+                review.setUser(artist);
+                review.setArtworkId(artwork.getId());
+                review.setIsRecommended(true);
+                review.setLikes(0);
+                review.setContent("와 너무 멋있어요.");
+                reviewRepository.save(review);
             }
         };
     }

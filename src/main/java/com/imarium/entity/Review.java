@@ -13,6 +13,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Long artworkId;
+
     @Column(nullable = false, length = 1000)
     private String content;
 

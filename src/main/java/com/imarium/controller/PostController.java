@@ -93,7 +93,7 @@ public class PostController {
             reviews = reviewService.findPopularOrLatestReviews(25);
         }
         List<ReviewDto> reviewDtos = reviews.stream()
-                .map(review -> new ReviewDto(review.getId(), review.getContent(), review.getLikes(), review.getIsRecommended()))
+                .map(review -> new ReviewDto(review.getId(), review.getArtworkId(), review.getContent(), review.getLikes(), review.getIsRecommended()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(reviewDtos);
     }
@@ -108,7 +108,7 @@ public class PostController {
     public ResponseEntity<ReviewDto> getReviewInfo(@PathVariable Long reviewId) {
         Review review = reviewService.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
-        ReviewDto dto = new ReviewDto(review.getId(), review.getContent(), review.getLikes(), review.getIsRecommended());
+        ReviewDto dto = new ReviewDto(review.getId(), review.getArtworkId(), review.getContent(), review.getLikes(), review.getIsRecommended());
         return ResponseEntity.ok(dto);
     }
 
