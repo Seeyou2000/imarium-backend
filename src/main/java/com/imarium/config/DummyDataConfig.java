@@ -72,13 +72,23 @@ public class DummyDataConfig {
                 artworkPrice.setMaxPrice(600000);
                 artworkPriceRepository.save(artworkPrice);
 
-                Review review = new Review();
-                review.setUser(artist);
-                review.setArtworkId(artwork.getId());
-                review.setIsRecommended(true);
-                review.setLikes(0);
-                review.setContent("와 너무 멋있어요.");
-                reviewRepository.save(review);
+                List<String> contents = List.of(
+                        "와 너무 멋있어요.",
+                        "심오하네요...",
+                        "이거 진짜에요?",
+                        "실물로 봐야 더 좋은 작품이에요.",
+                        "Wow, that's so cool."
+                );
+
+                for(String content : contents) {
+                    Review review = new Review();
+                    review.setUser(artist);
+                    review.setArtworkId(artwork.getId());
+                    review.setIsRecommended(true);
+                    review.setLikes(0);
+                    review.setContent(content);
+                    reviewRepository.save(review);
+                }
             }
         };
     }
