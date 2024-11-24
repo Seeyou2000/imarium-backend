@@ -18,17 +18,17 @@ public class Col {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 2000)
+    @Column(length = 2000)
     private String content;
 
-    @Column(nullable = false)
+    @Column
     private String imageUrl;
 
     @Column(nullable = false)
     private Boolean isRecommended;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     // Column과 Image 간의 1:N 관계 설정

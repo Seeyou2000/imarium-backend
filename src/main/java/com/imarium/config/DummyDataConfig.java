@@ -102,4 +102,25 @@ public class DummyDataConfig {
             carouselRepository.save(carousel);
         };
     }
+
+    @Bean
+    public CommandLineRunner insertColumn(ColRepository colRepository){
+        return args -> {
+            // 이미지 URL 목록
+            List<String> columnImageUrls = List.of(
+                    "/uploads/column/image1.jpg",  // 실제 업로드된 이미지 URL을 사용
+                    "/uploads/column/image2.jpg",
+                    "/uploads/column/image3.jpg",
+                    "/uploads/column/image4.jpg"
+            );
+
+            for(String columnImage : columnImageUrls) {
+                Col col = new Col();
+                col.setIsRecommended(true);
+                col.setTitle("안녕하세요.");
+                col.setImageUrl(columnImage);
+                colRepository.save(col);
+            }
+        };
+    }
 }
