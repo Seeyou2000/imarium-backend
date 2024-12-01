@@ -32,7 +32,7 @@ public class DummyDataConfig {
                             newArtist.setTags("아무거나");
                             newArtist.setLikes(0);
                             newArtist.setIsSavedLogin(true);
-                            newArtist.setBannerUrl("someBannerUrl");  // set actual banner URL if needed
+                            newArtist.setBannerUrl("/uploads/artist.jpg");  // set actual banner URL if needed
                             artistRepository.save(newArtist);
                             return newArtist;
                         });
