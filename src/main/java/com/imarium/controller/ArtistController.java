@@ -77,9 +77,9 @@ public class ArtistController {
     @Operation(summary = "작가 정보 조회", description = "특정 작가의 정보를 반환합니다.")
     @GetMapping("/{artistId}")
     public ResponseEntity<ArtistDto> getArtistInfo(@PathVariable Long artistId, Authentication authentication) {
-        if (!isArtist(authentication)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 여기는 작가가 아니라는 http 사이트를 띄워줘야함!!!
-        }
+//        if (!isArtist(authentication)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 여기는 작가가 아니라는 http 사이트를 띄워줘야함!!!
+//        }
 
         Artist artist = artistService.getArtistById(artistId);
         ArtistDto artistDto = new ArtistDto(artist.getId(), artist.getBannerUrl(), artist.getName(), artist.getTags(), artist.getLikes());
@@ -90,9 +90,9 @@ public class ArtistController {
     @Operation(summary = "작가 작품 목록 조회", description = "특정 작가의 작품 목록을 반환합니다.")
     @GetMapping("/{artistId}/artworks")
     public ResponseEntity<List<ArtworkDto>> getArtistArtworks(@PathVariable Long artistId, Authentication authentication) {
-        if (!isArtist(authentication)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 여기는 작가가 아니라는 http 사이트를 띄워줘야함!!!
-        }
+//        if (!isArtist(authentication)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 여기는 작가가 아니라는 http 사이트를 띄워줘야함!!!
+//        }
 
         List<Artwork> artworks = artworkService.getArtworksByArtist(artistId);
         List<ArtworkDto> artworkDtos = artworks.stream()
@@ -115,9 +115,9 @@ public class ArtistController {
     @Operation(summary = "작가 전시 목록 조회", description = "특정 작가의 전시 목록을 반환합니다.")
     @GetMapping("/{artistId}/exhibitions")
     public ResponseEntity<List<ExhibitionDto>> getArtistExhibitions(@PathVariable Long artistId, Authentication authentication) {
-        if (!isArtist(authentication)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 여기는 작가가 아니라는 http 사이트를 띄워줘야함!!!
-        }
+//        if (!isArtist(authentication)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 여기는 작가가 아니라는 http 사이트를 띄워줘야함!!!
+//        }
 
         List<Exhibition> exhibitions = exhibitionService.getExhibitionsByArtist(artistId);
         List<ExhibitionDto> exhibitionDtos = exhibitions.stream()
