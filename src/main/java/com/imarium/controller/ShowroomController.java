@@ -98,12 +98,14 @@ public class ShowroomController {
 
             relatedItems = Stream.concat(
                     artworks.stream().map(artwork -> new RelatedItemDto(
+                            artwork.getId(),
                             artwork.getTitle(),
                             artwork.getDescription(),
                             artwork.getIsSaved(),
                             artwork.getImages() != null && !artwork.getImages().isEmpty() ? artwork.getImages().get(0).getImageUrl() : null
                     )),
                     exhibitions.stream().map(exhibition -> new RelatedItemDto(
+                            exhibition.getId(),
                             exhibition.getTitle(),
                             exhibition.getDescription(),
                             exhibition.getIsSaved(),
@@ -116,12 +118,14 @@ public class ShowroomController {
             List<Exhibition> exhibitions = exhibitionService.findAll();
             relatedItems = Stream.concat(
                     artworks.stream().map(artwork -> new RelatedItemDto(
+                            artwork.getId(),
                             artwork.getTitle(),
                             artwork.getDescription(),
                             artwork.getIsSaved(),
                             artwork.getImages() != null && !artwork.getImages().isEmpty() ? artwork.getImages().get(0).getImageUrl() : null
                     )),
                     exhibitions.stream().map(exhibition -> new RelatedItemDto(
+                            exhibition.getId(),
                             exhibition.getTitle(),
                             exhibition.getDescription(),
                             exhibition.getIsSaved(),
@@ -152,12 +156,14 @@ public class ShowroomController {
         // Artwork와 Exhibition 데이터를 RelatedItemDto로 변환
         List<RelatedItemDto> relatedItems = Stream.concat(
                 artworks.stream().map(artwork -> new RelatedItemDto(
+                        artwork.getId(),
                         artwork.getTitle(),
                         artwork.getDescription(),
                         artwork.getIsSaved(),
                         artwork.getImages() != null && !artwork.getImages().isEmpty() ? artwork.getImages().get(0).getImageUrl() : null
                 )),
                 exhibitions.stream().map(exhibition -> new RelatedItemDto(
+                        exhibition.getId(),
                         exhibition.getTitle(),
                         exhibition.getDescription(),
                         exhibition.getIsSaved(),
