@@ -26,20 +26,17 @@ public class ShowroomController {
     private final CarouselService carouselService;
     private final ExhibitionService exhibitionService;
     private final ArtworkService artworkService;
-    private final TagService tagService;
 
     public ShowroomController(UserService userService,
                               SearchHistoryService searchHistoryService,
                               CarouselService carouselService,
                               ExhibitionService exhibitionService,
-                              ArtworkService artworkService,
-                              TagService tagService) {
+                              ArtworkService artworkService) {
         this.userService = userService;
         this.searchHistoryService = searchHistoryService;
         this.carouselService = carouselService;
         this.exhibitionService = exhibitionService;
         this.artworkService = artworkService;
-        this.tagService = tagService;
     }
 
     // 1. 로그인 여부 확인 API
@@ -89,19 +86,50 @@ public class ShowroomController {
     @GetMapping("/related")
     public ResponseEntity<List<RelatedItemDto>> getRelatedItems(@RequestParam(required = false) String tag) {
         List<RelatedItemDto> relatedItems;
+
         if (tag != null && !tag.isEmpty()) {
-            relatedItems = tagService.findByTag(tag).stream()
-                    .map(item -> new RelatedItemDto(item.getTitle(), item.getDescription(), item.getIsSaved(), item.getImageUrl()))
+            // 태그가 제공된 경우, Artwork 및 Exhibition에서 태그를 기준으로 필터링
+            List<Artwork> artworks = artworkService.findAll().stream()
+                    .filter(artwork -> artwork.getArtist().getTags() != null && artwork.getArtist().getTags().contains(tag))
                     .collect(Collectors.toList());
+            List<Exhibition> exhibitions = exhibitionService.findAll().stream()
+                    .filter(exhibition -> exhibition.getArtist().getTags() != null && exhibition.getArtist().getTags().contains(tag))
+                    .collect(Collectors.toList());
+
+            relatedItems = Stream.concat(
+                    artworks.stream().map(artwork -> new RelatedItemDto(
+                            artwork.getTitle(),
+                            artwork.getDescription(),
+                            artwork.getIsSaved(),
+                            artwork.getImages() != null && !artwork.getImages().isEmpty() ? artwork.getImages().get(0).getImageUrl() : null
+                    )),
+                    exhibitions.stream().map(exhibition -> new RelatedItemDto(
+                            exhibition.getTitle(),
+                            exhibition.getDescription(),
+                            exhibition.getIsSaved(),
+                            exhibition.getImages() != null && !exhibition.getImages().isEmpty() ? exhibition.getImages().get(0).getImageUrl() : null
+                    ))
+            ).collect(Collectors.toList());
         } else {
-            // 기본적으로 모든 작품과 전시를 반환
+            // 태그가 제공되지 않은 경우, 모든 Artwork 및 Exhibition 반환
             List<Artwork> artworks = artworkService.findAll();
             List<Exhibition> exhibitions = exhibitionService.findAll();
             relatedItems = Stream.concat(
-                    artworks.stream().map(artwork -> new RelatedItemDto(artwork.getTitle(), artwork.getDescription(), artwork.getIsSaved(), artwork.getImages().get(0).getImageUrl())),
-                    exhibitions.stream().map(exhibition -> new RelatedItemDto(exhibition.getTitle(), exhibition.getDescription(), exhibition.getIsSaved(), exhibition.getImages().get(0).getImageUrl()))
+                    artworks.stream().map(artwork -> new RelatedItemDto(
+                            artwork.getTitle(),
+                            artwork.getDescription(),
+                            artwork.getIsSaved(),
+                            artwork.getImages() != null && !artwork.getImages().isEmpty() ? artwork.getImages().get(0).getImageUrl() : null
+                    )),
+                    exhibitions.stream().map(exhibition -> new RelatedItemDto(
+                            exhibition.getTitle(),
+                            exhibition.getDescription(),
+                            exhibition.getIsSaved(),
+                            exhibition.getImages() != null && !exhibition.getImages().isEmpty() ? exhibition.getImages().get(0).getImageUrl() : null
+                    ))
             ).collect(Collectors.toList());
         }
+
         return ResponseEntity.ok(relatedItems);
     }
 
@@ -112,9 +140,31 @@ public class ShowroomController {
     })
     @GetMapping("/search/tags")
     public ResponseEntity<List<RelatedItemDto>> searchByTag(@RequestParam String tag) {
-        List<RelatedItemDto> relatedItems = tagService.findByTag(tag).stream()
-                .map(item -> new RelatedItemDto(item.getTitle(), item.getDescription(), item.getIsSaved(), item.getImageUrl()))
+        // 태그를 포함하는 Artwork 및 Exhibition을 필터링
+        List<Artwork> artworks = artworkService.findAll().stream()
+                .filter(artwork -> artwork.getArtist().getTags() != null && artwork.getArtist().getTags().contains(tag))
                 .collect(Collectors.toList());
+
+        List<Exhibition> exhibitions = exhibitionService.findAll().stream()
+                .filter(exhibition -> exhibition.getArtist().getTags() != null && exhibition.getArtist().getTags().contains(tag))
+                .collect(Collectors.toList());
+
+        // Artwork와 Exhibition 데이터를 RelatedItemDto로 변환
+        List<RelatedItemDto> relatedItems = Stream.concat(
+                artworks.stream().map(artwork -> new RelatedItemDto(
+                        artwork.getTitle(),
+                        artwork.getDescription(),
+                        artwork.getIsSaved(),
+                        artwork.getImages() != null && !artwork.getImages().isEmpty() ? artwork.getImages().get(0).getImageUrl() : null
+                )),
+                exhibitions.stream().map(exhibition -> new RelatedItemDto(
+                        exhibition.getTitle(),
+                        exhibition.getDescription(),
+                        exhibition.getIsSaved(),
+                        exhibition.getImages() != null && !exhibition.getImages().isEmpty() ? exhibition.getImages().get(0).getImageUrl() : null
+                ))
+        ).collect(Collectors.toList());
+
         return ResponseEntity.ok(relatedItems);
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RelatedItemRepository extends JpaRepository<RelatedItem, Long> {
 
-    List<RelatedItem> findByTagId(Long tagId);  // 태그 ID로 연관 항목 검색
+    List<RelatedItem> findByTag(String tag);  // 태그 ID로 연관 항목 검색
 
     List<RelatedItem> findByArtworkId(Long artworkId);  // 특정 작품과 연관된 태그들
 

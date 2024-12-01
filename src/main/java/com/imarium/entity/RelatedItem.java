@@ -10,9 +10,8 @@ public class RelatedItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
     @JoinColumn(name = "tag_id")
-    private Tag tag;
+    private String tag;
 
     @ManyToOne
     @JoinColumn(name = "artwork_id", nullable = true)
